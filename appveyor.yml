@@ -1,0 +1,11 @@
+version: 1.0.{build}
+before_build:
+- cmd: nuget restore
+build:
+  publish_nuget: true
+  include_nuget_references: true
+  verbosity: minimal
+deploy:
+- provider: NuGet
+  api_key:
+    secure: fDvwVlBxS7Ah+tnDK7Br2Q+MjXvvithpWE6IweudUGFdmQNcydR8Y/bSWpFLnVpQ
