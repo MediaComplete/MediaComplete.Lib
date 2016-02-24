@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("MediaComplete.Lib")]
 [assembly: InternalsVisibleTo("MediaComplete.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A .NET library for music library identification and management.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("https://mediacomplete.github.io/")]
 [assembly: AssemblyProduct("MediaComplete.Lib")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]

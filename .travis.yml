@@ -11,6 +11,9 @@ script:
   - xbuild /p:Configuration=Debug /p:Platform=x86 MediaComplete.Lib/MediaComplete.Lib.csproj
   - xbuild /p:Configuration=Debug /p:Platform=x86 MediaComplete.Test/MediaComplete.Test.csproj
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./MediaComplete.Test/bin/x86/Debug/MediaComplete.Test.dll
+  - cd MediaComplete.Lib && mono nuget.exe pack MediaComplete.Lib.csproj -Prop Platform=x86
+  - mono MediaComplete.Lib/nuget.exe setApiKey $NUGET_API_KEY
+  - mono MediaComplete.Lib/nuget.exe push MediaComplete.Lib/*.nupkg
 notifications:
   email:
     recipients:

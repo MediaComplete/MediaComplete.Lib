@@ -246,6 +246,7 @@
     <None Include="ffmpeg\licenses\zlib.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="nuget.exe" />
     <Content Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
