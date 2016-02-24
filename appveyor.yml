@@ -5,9 +5,13 @@ build:
   publish_nuget: true
   include_nuget_references: true
   verbosity: minimal
-before_deploy:
+after_test:
 - cd MediaComplete.Lib && nuget pack MediaComplete.Lib.csproj -Prop Platform=x86
+artifacts:
+- path: MediaComplete.Lib/MediaComplete.Lib*.nupkg
+  name: MediaComplete.Lib.nupkg
 deploy:
 - provider: NuGet
+  artifact: MediaComplete.Lib.nupkg
   api_key:
     secure: fDvwVlBxS7Ah+tnDK7Br2Q+MjXvvithpWE6IweudUGFdmQNcydR8Y/bSWpFLnVpQ
