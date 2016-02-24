@@ -5,6 +5,8 @@ build:
   publish_nuget: true
   include_nuget_references: true
   verbosity: minimal
+before_deploy:
+- cd MediaComplete.Lib && nuget pack MediaComplete.Lib.csproj
 deploy:
 - provider: NuGet
   api_key:
