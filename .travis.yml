@@ -1,0 +1,18 @@
+sudo: false
+language: csharp
+solution: MediaComplete.Lib.sln
+install:
+  - nuget restore MediaComplete.Lib.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - export MONO_IOMAP=all xbuild
+  - xbuild /p:Configuration=Debug /p:Platform=x86 MediaComplete.Lib/MediaComplete.Lib.csproj
+  - xbuild /p:Configuration=Debug /p:Platform=x86 MediaComplete.Test/MediaComplete.Test.csproj
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./MediaComplete.Test/bin/x86/Debug/MediaComplete.Test.dll
+notifications:
+  email:
+    recipients:
+      - rjnshanker@gmail.com
+      - tevert2@gmail.com
+    on_success: always
+    on_failure: always
