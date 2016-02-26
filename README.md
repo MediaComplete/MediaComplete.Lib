@@ -1,6 +1,6 @@
 # MediaComplete.Lib
 
-[![Build Status](https://travis-ci.org/MediaComplete/MediaComplete.Lib.svg?branch=master)](https://travis-ci.org/MediaComplete/MediaComplete)
+[![Build status](https://ci.appveyor.com/api/projects/status/2sn90nyyot32gle1?svg=true)](https://ci.appveyor.com/project/Void-Pointer/mediacomplete-lib)
 
 In an effort to break our formerly monolithic app into more manageable components, we separated the .Lib and .Test projects into their own projects. At some point we may even choose to break this into smaller pieces, so this was also an exercise in preparation, to learn how it might roll out.
 
