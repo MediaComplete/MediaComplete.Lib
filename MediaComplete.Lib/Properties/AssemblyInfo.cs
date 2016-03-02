@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("MediaComplete.Lib")]
 [assembly: InternalsVisibleTo("MediaComplete.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A .NET library for music library identification and management.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("https://mediacomplete.github.io/")]
 [assembly: AssemblyProduct("MediaComplete.Lib")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
+// [assembly: AssemblyVersion("1.0.9")]
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.9")]
+[assembly: AssemblyFileVersion("1.0.9")]

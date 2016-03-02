@@ -1,0 +1,44 @@
+environment:
+  github_auth_token:
+    secure: G0cU5afl4gb8zB4hmxW3DHOaXUmYFNRgV9U90Sn48tNvzLu/WprYgC1F1exv1D3j
+version: 1.0.{build}
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.cs'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+before_build:
+- cmd: nuget restore
+build:
+  publish_nuget: true
+  include_nuget_references: true
+  verbosity: minimal
+after_test:
+- cd MediaComplete.Lib && nuget pack MediaComplete.Lib.csproj -Prop Platform=x86
+artifacts:
+- path: MediaComplete.Lib/MediaComplete.Lib*.nupkg
+  name: MediaComplete.Lib.nupkg
+deploy:
+- provider: NuGet
+  artifact: MediaComplete.Lib.nupkg
+  api_key:
+    secure: fDvwVlBxS7Ah+tnDK7Br2Q+MjXvvithpWE6IweudUGFdmQNcydR8Y/bSWpFLnVpQ
+
+# Push back the updated AssemblyInfo.cs. The version numbers need to keep climbing,
+# or the release building process will break.
+# Note that this will use a token tied to Tyler Evert's account, but will show Appveyor as the name.
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:github_auth_token):x-oauth-basic@github.com`n"
+  - git config --global user.email "appveyor@mediacomplete.github.io"
+  - git config --global user.name "Appveyor"
+  - git checkout master
+  - git add */AssemblyInfo.cs
+  - git commit -m "Appveyor - bumping patch number for successful build"
+  - git push
+
+# We want to ignore our own commits.
+skip_commits:
+  message: /Appveyor - bumping patch number for successful build/
