@@ -25,15 +25,6 @@ namespace MediaComplete.Lib.Library.DataSource
         /// Dictionary of id, <see cref="FileInfo"/> pairs.
         /// </summary>
         private readonly Dictionary<string, FileInfo> _cachedFiles;
-        /// <summary>
-        /// Windows file watcher; monitors the library for changes
-        /// </summary>
-        private FileSystemWatcher _watcher;
-
-        /// <summary>
-        /// FileSystemWatcher buffer was overflowing for large sort operations. This is used to extend the buffer size
-        /// </summary>
-        private const int BufferSize = 32768;
 
         private static FileSystem _instance;
         
@@ -68,22 +59,6 @@ namespace MediaComplete.Lib.Library.DataSource
             {
                 AddFileToCache(Guid.NewGuid().ToString(), fileInfo);
             }
-            if (_watcher != null)
-            {
-                _watcher.Dispose();
-            }
-            _watcher = new FileSystemWatcher(SettingWrapper.MusicDir.FullPath)
-            {
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-                IncludeSubdirectories = true
-            };
-            _watcher.InternalBufferSize = BufferSize;
-            _watcher.Renamed += RenamedFile;
-            _watcher.Changed += ChangedFile;
-            _watcher.Created += CreatedFile;
-            _watcher.Deleted += DeletedFile;
-
-            _watcher.EnableRaisingEvents = true;
         }
    
         /// <summary>
@@ -286,156 +261,6 @@ namespace MediaComplete.Lib.Library.DataSource
         #region FileWatcher and Events
 
         /// <summary>
-        /// Updates cached song as a result of a Rename event triggered by the system file watcher.
-        /// </summary>
-        /// <param name="sender">The object sender</param>
-        /// <param name="e">The details of the rename</param>
-        public void RenamedFile(object sender, RenamedEventArgs e)
-        {
-            
-            var retEnum = new List<Tuple<LocalSong, LocalSong>>();
-            if (Directory.Exists(e.FullPath))
-            {
-                var allSongs = _cachedSongs.Values.Where(x => x.Path.StartsWith(e.OldFullPath, StringComparison.Ordinal));
-                foreach (var song in allSongs)
-                {
-                    var oldSong = song;
-                    var tempPath = e.FullPath.EndsWith(Path.DirectorySeparatorChar + "", StringComparison.Ordinal)
-                        ? e.FullPath
-                        : e.FullPath + Path.DirectorySeparatorChar;
-                    var newPath = tempPath + song.Name;
-                    song.SongPath = new SongPath(newPath);
-                    retEnum.Add(new Tuple<LocalSong, LocalSong>(oldSong, song));
-                }
-            }
-            else if (File.Exists(e.FullPath))
-            {
-                var firstOrDefault = _cachedSongs.Values.FirstOrDefault(x => x.Path.Equals(e.OldFullPath));
-                if (firstOrDefault != null)
-                {
-                    var key = firstOrDefault.Id;
-
-                    _cachedSongs[key].SongPath = new SongPath(e.FullPath);
-                    _cachedFiles[key] = new FileInfo(e.FullPath);
-                }
-            }
-            SongRenamed(retEnum);
-        }
-
-        /// <summary>
-        /// Updates cached song as a result of a 'changed' event being triggered by the system file watcher.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The details from the file system</param>
-        public void ChangedFile(object sender, FileSystemEventArgs e)
-        {
-            var retEnum = new List<LocalSong>();
-            var list = _cachedSongs.Values.ToList();
-            if (Directory.Exists(e.FullPath))
-            {
-                try
-                {
-                    var files =
-                        new DirectoryInfo(e.FullPath).EnumerateFiles("*", SearchOption.AllDirectories).GetMusicFiles();
-                    foreach (var file in files)
-                    {
-                        var newValue = list.FirstOrDefault(x => x != null && x.Path.Equals(file.FullName));
-                        if (newValue != null && file.Exists)
-                        {
-                            newValue.SongPath = new SongPath(file.FullName);
-                            UpdateFile(newValue);
-                            _cachedFiles[newValue.Id] = file;
-                            retEnum.Add(newValue);
-                        }
-                        else
-                        {
-                            if (!IsFileLocked(file))
-                            {
-                                var key = Guid.NewGuid().ToString();
-                                AddFileToCache(key, file.FullName);
-                                retEnum.Add(_cachedSongs[key]);
-                            }
-                        }
-                    }
-                }
-                catch (DirectoryNotFoundException)
-                {
-                    // This can happen if a directory is deleted. 
-                    // It will trigger a delete event AND a changed event, and this will cause an exception.
-                }
-            }
-            else if (File.Exists(e.FullPath))
-            {
-                var firstOrDefault = list.FirstOrDefault(x => x.Path.Equals(e.FullPath));
-                if (firstOrDefault != null)
-                {
-                    var key = firstOrDefault.Id;
-                    UpdateFile(_cachedSongs[key]);
-                    retEnum.Add(_cachedSongs[key]);
-                }
-            }
-            SongChanged(retEnum);
-        }
-
-        /// <summary>
-        /// Updates cached song as a result of a 'deleted' event being triggered by the system file watcher.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The details from the file system</param>
-        public void DeletedFile(object sender, FileSystemEventArgs e)
-        {
-            var retEnum = new List<LocalSong>();
-            var list = _cachedSongs.Values.ToList();
-            var firstOrDefault = list.FirstOrDefault(x => x!=null && x.Path.Equals(e.FullPath));
-            if (firstOrDefault != null)
-            {
-                var key = firstOrDefault.Id;
-                retEnum.Add(_cachedSongs[key]);
-                DeleteSong(_cachedSongs[key]);
-            }
-            else
-            {
-                var keys = list.Where(x => x!=null && x.Path.StartsWith(e.FullPath, StringComparison.Ordinal)).Select(x => x.Id).ToList();
-                foreach (var key in keys)
-                {
-                    retEnum.Add(_cachedSongs[key]);
-                    DeleteSong(_cachedSongs[key]);
-                }
-            }
-            SongDeleted(retEnum);
-
-        }
-
-        /// <summary>
-        /// Updates cached song as a result of a 'created' event being triggered by the system file watcher.
-        /// </summary>
-        /// <param name="sender">The sender of the event</param>
-        /// <param name="e">The details from the file system</param>
-        public void CreatedFile(object sender, FileSystemEventArgs e)
-        {
-            var retEnum = new List<LocalSong>();
-            if (File.Exists(e.FullPath))
-            {
-                if (_cachedSongs.Values.Any(x => x.SongPath.FullPath.Equals(e.FullPath))) return;
-                var key = Guid.NewGuid().ToString();
-                AddFileToCache(key, e.FullPath);
-                retEnum.Add(_cachedSongs[key]);
-            }
-            else if (Directory.Exists(e.FullPath))
-            {
-                var files = new DirectoryInfo(e.FullPath).EnumerateFiles("*", SearchOption.AllDirectories).GetMusicFiles();
-                foreach (var file in files)
-                {
-                    if (_cachedFiles.Values.Any(x => x.FullName.Equals(file.FullName))) continue;
-                    var key = Guid.NewGuid().ToString();
-                    AddFileToCache(key, file);
-                    retEnum.Add(_cachedSongs[key]);
-                }
-            }
-            SongCreated(retEnum);
-        }
-
-        /// <summary>
         /// Returns a local song object based on a song's path
         /// </summary>
         /// <param name="songPath"></param>
@@ -542,59 +367,6 @@ namespace MediaComplete.Lib.Library.DataSource
 
         }
 
-        /// <summary>
-        /// Helper function to determine whether a fileInfo is currently being used. This function 
-        /// is used to help resolve concurrency issues in the FileSystemWatcher EventHandlers
-        /// </summary>
-        /// <param name="file">the file that needs to be checked</param>
-        /// <returns>true if file is being used</returns>
-        /// <returns>false if file is not being used</returns>
-        /// This guy figured it out first - http://stackoverflow.com/a/9277499
-        private static bool IsFileLocked(FileInfo file)
-        {
-            FileStream stream = null;
-
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            catch (UnauthorizedAccessException){}
-            finally
-            {
-                if (stream != null)
-                    stream.Close();
-            }
-            return false;
-        }
-  
-        /// <summary>
-        /// Used to update the attributes of the TagLibFile associated with the AbstractSong
-        /// </summary>
-        /// <param name="song"></param>
-        private void UpdateFile(LocalSong song)
-        {
-            //Catch blocks do nothing. Sometimes this function is called on a file that has already been moved
-            //This happens if create & delete events happen AND a changed happens. Therefore, this does not have to execute
-            try
-            {
-                var tagFile = TaglibFile.Create(song.Path);
-                var tag = tagFile.Tag;
-                _cachedSongs[song.Id].Title = tag.Title;
-                _cachedSongs[song.Id].Artists = tag.AlbumArtists;
-                _cachedSongs[song.Id].Album = tag.Album;
-                _cachedSongs[song.Id].Genres = tag.Genres;
-                _cachedSongs[song.Id].Year = tag.Year;
-                _cachedSongs[song.Id].TrackNumber = tag.Track;
-                _cachedSongs[song.Id].SupportingArtists = tag.Performers;
-                // Duration is assumed to be fixed
-            }
-            catch (FileNotFoundException) {}
-            catch (UnauthorizedAccessException) {}
-        }
         #endregion
 
         /// <summary>

@@ -2,7 +2,6 @@
 using M3U.NET;
 using MediaComplete.Lib.Library.DataSource;
 using TaglibFile = TagLib.File;
-using System.Threading.Tasks;
 
 namespace MediaComplete.Lib.Library
 {
