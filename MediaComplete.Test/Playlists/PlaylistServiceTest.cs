@@ -3,7 +3,6 @@
 namespace MediaComplete.Test.Playlists
 {
     [TestFixture]
-    [Ignore]
     public class PlaylistServiceTest
     {
 

@@ -12,7 +12,6 @@ using NUnit.Framework;
 namespace MediaComplete.Test
 {
     [TestFixture]
-    [Ignore]
     public class SorterTest
     {
         private static readonly List<MetaAttribute> SortOrder = new List<MetaAttribute>

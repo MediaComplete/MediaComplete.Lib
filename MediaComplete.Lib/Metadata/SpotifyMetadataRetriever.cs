@@ -126,20 +126,10 @@ namespace MediaComplete.Lib.Metadata
         }
 
         /// <summary>
-        /// Asynchronously access the singleton instance. This is necessary because initial 
-        /// construction needs to request an authentication token.
+        /// Access the singleton instance.
         /// </summary>
-        /// <returns>An awaitable instance of this class</returns>
-        public static async Task<SpotifyMetadataRetriever> GetInstanceAsync()
-        {
-            if (_instance == null)
-            {
-                _instance = new SpotifyMetadataRetriever();
-                await _instance.RefreshAccessTokenAsync();
-            }
-            return _instance;
-        }
-
+        public static SpotifyMetadataRetriever Inst = new SpotifyMetadataRetriever();
+        
         #endregion
 
         #region Connection Management

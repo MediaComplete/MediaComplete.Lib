@@ -4,11 +4,13 @@ using MediaComplete.Lib.Library;
 using MediaComplete.Lib.Playing;
 using MediaComplete.Lib.Library.DataSource;
 using NUnit.Framework;
+using MediaComplete.Lib;
+using Moq;
+using MediaComplete.Lib.Playlists;
 
 namespace MediaComplete.Test.Playing
 {
     [TestFixture]
-    [Ignore]
     public class NowPlayingTest
     {
         [SetUp]
@@ -248,7 +250,6 @@ namespace MediaComplete.Test.Playing
         #region Add(AbstractSong)
 
         [Test]
-        [Ignore]
         public void Add_EmptyQueue_HasOneSong()
         {
             NowPlaying.Inst.Add(new LocalSong(Guid.NewGuid().ToString(),new SongPath(("fakesong"))));
@@ -258,7 +259,6 @@ namespace MediaComplete.Test.Playing
         }
 
         [Test]
-        [Ignore]
         public void Add_PopulatedQueue_AddedToEnd()
         {
             NowPlaying.Inst.Add(new LocalSong(Guid.NewGuid().ToString(),new SongPath(("fakesong"))));
@@ -281,7 +281,6 @@ namespace MediaComplete.Test.Playing
         #region Add(IEnumerable<AbstractSong>)
 
         [Test]
-        [Ignore]
         public void Add_EmptyQueue_HasTwoSongs()
         {
             var targetSong = new LocalSong(Guid.NewGuid().ToString(),new SongPath(("fakesong2")));
@@ -297,9 +296,11 @@ namespace MediaComplete.Test.Playing
         }
 
         [Test]
-        [Ignore]
         public void Add_EmptyList_NoSongsAdded()
         {
+            var playlistService = Mock.Of<IPlaylistService>();
+            var subject = new NowPlaying(playlistService);
+
             NowPlaying.Inst.Add(new List<AbstractSong>());
 
             Assert.AreEqual(0, NowPlaying.Inst.Playlist.Songs.Count, "Queue not the right size!");
@@ -307,7 +308,6 @@ namespace MediaComplete.Test.Playing
         }
 
         [Test]
-        [Ignore]
         public void Add_PopulatedQueue_SongsAtEnd()
         {
             NowPlaying.Inst.Add(new LocalSong(Guid.NewGuid().ToString(),new SongPath(("fakesong1"))));
@@ -491,7 +491,6 @@ namespace MediaComplete.Test.Playing
         #region Clear()
 
         [Test]
-        [Ignore]
         public void Clear_QueueEmpty_NothingHappens()
         {
             NowPlaying.Inst.Clear();

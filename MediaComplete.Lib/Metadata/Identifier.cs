@@ -107,7 +107,7 @@ namespace MediaComplete.Lib.Metadata
 
              // Found a match; populate the file
             if (_metadataRetriever == null)
-                _metadataRetriever = await SpotifyMetadataRetriever.GetInstanceAsync();
+                _metadataRetriever = SpotifyMetadataRetriever.Inst;
             await _metadataRetriever.GetMetadataAsync(file);
 
             // Save whatever we found

@@ -23,7 +23,7 @@ namespace MediaComplete.Lib
         /// Initializes the dependency chains in the application. 
         /// This must be called before attempting to resolve anything.
         /// </summary>
-        public static async void BuildAsync()
+        public static void Build()
         {
             var builder = new ContainerBuilder();
             var fs = FileSystem.Instance;
@@ -35,7 +35,7 @@ namespace MediaComplete.Lib
             builder.RegisterInstance(StatusBarHandler.Instance);
             builder.RegisterType<FfmpegAudioReader>().As<IAudioReader>();
             builder.RegisterType<DoresoIdentifier>().As<IAudioIdentifier>();
-            builder.RegisterInstance(await SpotifyMetadataRetriever.GetInstanceAsync()).ExternallyOwned().As<IMetadataRetriever>();
+            builder.RegisterInstance(SpotifyMetadataRetriever.Inst).ExternallyOwned().As<IMetadataRetriever>();
             builder.RegisterType<Identifier>().WithParameters(new[]
             {
                 new ResolvedParameter((pi, c) => pi.ParameterType == typeof(IAudioReader), (pi, c) => c.Resolve<IAudioReader>()),
@@ -73,7 +73,7 @@ namespace MediaComplete.Lib
         /// </returns>
         public static T Resolve<T>()
         {
-            if (_afContainer == null) BuildAsync();
+            if (_afContainer == null) Build();
             return _afContainer.Resolve<T>();
         }
         /// <summary>

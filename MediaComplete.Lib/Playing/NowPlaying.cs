@@ -17,7 +17,7 @@ namespace MediaComplete.Lib.Playing
         /// <summary>
         /// Singleton instance
         /// </summary>
-        public static readonly NowPlaying Inst = new NowPlaying();
+        public static readonly NowPlaying Inst = new NowPlaying(Dependency.Resolve<IPlaylistService>());
 
         /// <summary>
         /// The human-readable name for the "playlist" that's pumped through to the UI.
@@ -28,6 +28,11 @@ namespace MediaComplete.Lib.Playing
         /// Privately controlled list of songs in the queue.
         /// </summary>
         private readonly List<AbstractSong> _songs = new List<AbstractSong>();
+
+        /// <summary>
+        /// Manages access to the playlist repository. 
+        /// </summary>
+        private IPlaylistService playlistService;
 
         /// <summary>
         /// Index used to point to the currently active song. 
@@ -41,7 +46,7 @@ namespace MediaComplete.Lib.Playing
         {
             get
             {
-                var pl = new Playlist(Dependency.Resolve<IPlaylistService>(), new FakeM3U());
+                var pl = new Playlist(this.playlistService, new FakeM3U());
                 pl.Songs.AddRange(_songs);
                 return pl;
             }
@@ -65,9 +70,10 @@ namespace MediaComplete.Lib.Playing
         /// <summary>
         /// Private constructor. This class is a singleton.
         /// </summary>
-        private NowPlaying()
+        internal NowPlaying(IPlaylistService playlistService)
         {
             Index = -1;
+            this.playlistService = playlistService;
         }
 
         #region Playing queue stuff
