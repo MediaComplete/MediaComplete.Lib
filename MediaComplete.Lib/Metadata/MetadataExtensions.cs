@@ -88,7 +88,7 @@ namespace MediaComplete.Lib.Metadata
                     }
                     catch (FormatException)
                     {
-                        StatusBarHandler.Instance.ChangeStatusBarMessage("InvalidTrackNumber", StatusBarHandler.StatusIcon.Error);
+                        StatusBarHandler.Instance.ChangeStatusBarMessage("InvalidTrackNumber", StatusIcon.Error);
                     }
                     break;
                 case MetaAttribute.Year:
@@ -98,7 +98,7 @@ namespace MediaComplete.Lib.Metadata
                     }
                     catch (FormatException)
                     {
-                        StatusBarHandler.Instance.ChangeStatusBarMessage("InvalidTrackNumber", StatusBarHandler.StatusIcon.Error);
+                        StatusBarHandler.Instance.ChangeStatusBarMessage("InvalidTrackNumber", StatusIcon.Error);
                     }
                     break;
                 case MetaAttribute.AlbumArt:
