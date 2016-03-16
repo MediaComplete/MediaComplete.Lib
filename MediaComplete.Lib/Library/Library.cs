@@ -11,6 +11,20 @@ namespace MediaComplete.Lib.Library
     public class Library : ILibrary
     {
         /// <summary>
+        /// Occurs when settings are changed.
+        /// </summary>
+        public static event RefreshLibraryListener RefreshLibraryEvent = delegate { };
+
+        /// <summary>
+        /// Delegate for handling changed settings
+        /// </summary>
+        public delegate void RefreshLibraryListener();
+
+        public static void RefreshLibrary()
+        {
+            RefreshLibraryEvent.Invoke();
+        }
+        /// <summary>
         /// singleton instance of the Filemanager
         /// </summary>
         private static Library _instance;
