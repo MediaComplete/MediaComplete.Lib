@@ -77,7 +77,7 @@ namespace MediaComplete.Lib.Background
         /// <summary>
         /// The icon reflecting the current status of the task
         /// </summary>
-        public StatusBarHandler.StatusIcon Icon { get; set; }
+        public StatusIcon Icon { get; set; }
         /// <summary>
         /// Contains the most recent exception encountered while running the task.
         /// </summary>

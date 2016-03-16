@@ -159,7 +159,7 @@ namespace MediaComplete.Lib.Sorting
             {
                 Id = i;
                 Message = "Sorting-InProgress";
-                Icon = StatusBarHandler.StatusIcon.Working;
+                Icon = StatusIcon.Working;
 
                 if (Actions.Count == 0)
                 {
@@ -179,7 +179,7 @@ namespace MediaComplete.Lib.Sorting
                     {
                         Error = e;
                         Message = "Sorting-HadError";
-                        Icon = StatusBarHandler.StatusIcon.Error;
+                        Icon = StatusIcon.Error;
                         TriggerUpdate(this);
                     }
 
@@ -194,20 +194,20 @@ namespace MediaComplete.Lib.Sorting
 
                 if (Error == null)
                 {
-                    Icon = StatusBarHandler.StatusIcon.Success;
+                    Icon = StatusIcon.Success;
                 }
             }
             catch (TagLib.CorruptFileException e)
             {
                 Logger.LogException("Taglib found a corrupt file while creating the taglib file.", e);
                 Message = "Sorting-HadError";
-                Icon = StatusBarHandler.StatusIcon.Error;
+                Icon = StatusIcon.Error;
                 Error = e;
             }
             catch (Exception e)
             {
                 Message = "Sorting-HadError";
-                Icon = StatusBarHandler.StatusIcon.Error;
+                Icon = StatusIcon.Error;
                 Error = e;
             }
             finally

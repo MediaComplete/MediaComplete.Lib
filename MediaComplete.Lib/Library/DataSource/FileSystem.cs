@@ -180,7 +180,7 @@ namespace MediaComplete.Lib.Library.DataSource
             catch (UnauthorizedAccessException)
             {
                 // TODO MC-125 log
-                StatusBarHandler.Instance.ChangeStatusBarMessage("Save-Error", StatusBarHandler.StatusIcon.Error);
+                StatusBarHandler.Instance.ChangeStatusBarMessage("Save-Error", StatusIcon.Error);
             }
             _cachedSongs[lsong.Id] = lsong;
         }

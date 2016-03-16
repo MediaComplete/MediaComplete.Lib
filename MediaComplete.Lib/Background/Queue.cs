@@ -93,7 +93,7 @@ namespace MediaComplete.Lib.Background
         /// <param name="task">The task sending the update, which will have all the necessary data</param>
         private void RouteMessage(Task task)
         {
-            if (task.Icon > StatusBarHandler.StatusIcon.Success && (_greatestTask == null || _greatestTask.Icon < task.Icon))
+            if (task.Icon > StatusIcon.Success && (_greatestTask == null || _greatestTask.Icon < task.Icon))
             {
                 _greatestTask = task;
             }

@@ -90,42 +90,42 @@ namespace MediaComplete.Lib
             RaiseStatusBarEvent(format, messageKey, icon, extraArgs);
         }
 
+    }
+    /// <summary>
+    /// Icon to represent the status symbol to display. 
+    /// </summary>
+    public enum StatusIcon
+    {
+        // The order of this enumeration should be preserved, as it is used as a priority indicator in Queue.cs
+
         /// <summary>
-        /// Icon to represent the status symbol to display. 
+        /// Represents "no message"
         /// </summary>
-        public enum StatusIcon
-        {
-            // The order of this enumeration should be preserved, as it is used as a priority indicator in Queue.cs
+        None,
 
-            /// <summary>
-            /// Represents "no message"
-            /// </summary>
-            None,
+        /// <summary>
+        /// A "work in progress" icon
+        /// </summary>
+        Working,
 
-            /// <summary>
-            /// A "work in progress" icon
-            /// </summary>
-            Working,
+        /// <summary>
+        /// Represents an informational message
+        /// </summary>
+        Info,
 
-            /// <summary>
-            /// Represents an informational message
-            /// </summary>
-            Info,
+        /// <summary>
+        /// Represents a success message
+        /// </summary>
+        Success,
 
-            /// <summary>
-            /// Represents a success message
-            /// </summary>
-            Success,
+        /// <summary>
+        /// Represents a warning message
+        /// </summary>
+        Warning,
 
-            /// <summary>
-            /// Represents a warning message
-            /// </summary>
-            Warning,
-
-            /// <summary>
-            /// Represents an error message
-            /// </summary>
-            Error
-        }
+        /// <summary>
+        /// Represents an error message
+        /// </summary>
+        Error
     }
 }

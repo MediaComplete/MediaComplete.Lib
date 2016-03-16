@@ -75,7 +75,7 @@ namespace MediaComplete.Lib.Import
         {
             Id = i;
             Message = "Import-InProgress";
-            Icon = StatusBarHandler.StatusIcon.Working;
+            Icon = StatusIcon.Working;
             var count = _files.Count();
             var results = new ImportResults
             {
@@ -109,7 +109,7 @@ namespace MediaComplete.Lib.Import
                         Console.WriteLine(exception); // TODO (MC-125) log
                         results.FailCount++;
                         Message = "Importing-Error";
-                        Icon = StatusBarHandler.StatusIcon.Error;
+                        Icon = StatusIcon.Error;
                         Error = exception;
                         TriggerUpdate(this);
                     }
@@ -118,7 +118,7 @@ namespace MediaComplete.Lib.Import
                         Console.WriteLine(exception); // TODO (MC-125) log
                         results.FailCount++;
                         Message = "UnauthorizedAccess-Error";
-                        Icon = StatusBarHandler.StatusIcon.Error;
+                        Icon = StatusIcon.Error;
                         Error = exception;
                         TriggerUpdate(this);
                     }
@@ -136,13 +136,13 @@ namespace MediaComplete.Lib.Import
                 if (Error == null)
                 {
                     Message = "Import-Success";
-                    Icon = StatusBarHandler.StatusIcon.Success;
+                    Icon = StatusIcon.Success;
                 }
             }
             catch (Exception e)
             {
                 Message = "Importing-Error";
-                Icon = StatusBarHandler.StatusIcon.Error;
+                Icon = StatusIcon.Error;
                 Error = e;
             }
             finally

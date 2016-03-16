@@ -11,15 +11,17 @@ namespace MediaComplete.Lib.Library
     public class Library : ILibrary
     {
         /// <summary>
-        /// Occurs when settings are changed.
+        /// Occurs when Library needs to be refreshed
         /// </summary>
         public static event RefreshLibraryListener RefreshLibraryEvent = delegate { };
 
         /// <summary>
-        /// Delegate for handling changed settings
+        /// Delegate for handling Library refresh
         /// </summary>
         public delegate void RefreshLibraryListener();
-
+        /// <summary>
+        /// Invokes Event to refresh library UI
+        /// </summary>
         public static void RefreshLibrary()
         {
             RefreshLibraryEvent.Invoke();

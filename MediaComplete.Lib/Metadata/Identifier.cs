@@ -74,13 +74,13 @@ namespace MediaComplete.Lib.Metadata
         private async Task IdentifySongAsync(LocalSong file)
         {
             StatusBarHandler.Instance.ChangeStatusBarMessage("MusicIdentification-Started",
-                StatusBarHandler.StatusIcon.Working);
+                StatusIcon.Working);
 
             if (!_fileSystem.FileExists(file.SongPath))
             {
                 // TODO (MC-125) Logging
                 StatusBarHandler.Instance.ChangeStatusBarMessage("MusicIdentification-Error-NoException",
-                    StatusBarHandler.StatusIcon.Error);
+                    StatusIcon.Error);
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace MediaComplete.Lib.Metadata
             {
                 // TODO (MC-125) Logging
                 StatusBarHandler.Instance.ChangeStatusBarMessage("MusicIdentification-Error-NoException",
-                    StatusBarHandler.StatusIcon.Error);
+                    StatusIcon.Error);
                 return;
             }
 
@@ -101,7 +101,7 @@ namespace MediaComplete.Lib.Metadata
             {
                 // TODO (MC-125) Logging
                 StatusBarHandler.Instance.ChangeStatusBarMessage("{0}: {1}", "MusicIdentification-Warning-NoMatch",
-                    StatusBarHandler.StatusIcon.Warning, file.SongPath);
+                    StatusIcon.Warning, file.SongPath);
                 return;
             }
 
@@ -125,7 +125,7 @@ namespace MediaComplete.Lib.Metadata
         {
             Id = i;
             Message = "MusicIdentification-Started";
-            Icon = StatusBarHandler.StatusIcon.Working;
+            Icon = StatusIcon.Working;
 
             var counter = 0;
             var count = Files.Count();
@@ -146,7 +146,7 @@ namespace MediaComplete.Lib.Metadata
                         {
                             Logger.LogException("Automatic music identification error", x);
                             Message = "MusicIdentification-Warning-RateLimit";
-                            Icon = StatusBarHandler.StatusIcon.Warning;
+                            Icon = StatusIcon.Warning;
                             // TODO MC-76 Any other ID tasks in the queue should be canceled somehow
                             TriggerUpdate(this);
                             stop = true;
@@ -156,7 +156,7 @@ namespace MediaComplete.Lib.Metadata
                             Logger.LogException("Automatic music identification error", x);
                             Error = x;
                             Message = "MusicIdentification-Error";
-                            Icon = StatusBarHandler.StatusIcon.Error;
+                            Icon = StatusIcon.Error;
                             TriggerUpdate(this);
                         }
                         return true;
@@ -175,7 +175,7 @@ namespace MediaComplete.Lib.Metadata
             if (Error == null)
             {
                 Message = "MusicIdentification-Success";
-                Icon = StatusBarHandler.StatusIcon.Success;
+                Icon = StatusIcon.Success;
                 TriggerUpdate(this);
             }
             TriggerDone(this);
