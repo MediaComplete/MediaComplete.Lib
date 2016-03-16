@@ -7,16 +7,16 @@ namespace MediaComplete.Test
     public class StatusBarTest
     {
         private string _message;
-        private StatusBarHandler.StatusIcon _icon = StatusBarHandler.StatusIcon.None;
+        private StatusIcon _icon = StatusIcon.None;
         private int _count;
 
         [Test, Timeout(30000)]
         public void RaiseStatusBarEvent_StatusMessage_ValidStatusMessage()
         {
             const string testMessage = "Test is successful";
-            const StatusBarHandler.StatusIcon testIcon = StatusBarHandler.StatusIcon.Success;
+            const StatusIcon testIcon = StatusIcon.Success;
             const string clearMessage = null;
-            const StatusBarHandler.StatusIcon clearIcon = StatusBarHandler.StatusIcon.None;
+            const StatusIcon clearIcon = StatusIcon.None;
             StatusBarHandler.Instance.Interval = .1;
 
             StatusBarHandler.Instance.RaiseStatusBarEvent += HandleStatusBarChangeEvent;
@@ -33,7 +33,7 @@ namespace MediaComplete.Test
             Assert.AreEqual(clearIcon, _icon);
         }
 
-        private void HandleStatusBarChangeEvent(string format, string messageKey, StatusBarHandler.StatusIcon icon, params object[] extraArgs)
+        private void HandleStatusBarChangeEvent(string format, string messageKey, StatusIcon icon, params object[] extraArgs)
         {
             _message = messageKey;
             _icon = icon;
