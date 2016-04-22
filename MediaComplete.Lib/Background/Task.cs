@@ -50,7 +50,6 @@ namespace MediaComplete.Lib.Background
         /// <param name="data">The data (the <see cref="Task"/> itself)</param>
         protected void TriggerDone(Task data)
         {
-            Library.Library.RefreshLibrary();
             data.PercentComplete = 1;
             TriggerUpdate(data);
             Lock.Release();

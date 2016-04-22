@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using M3U.NET;
 using MediaComplete.Lib.Library.DataSource;
-using TaglibFile = TagLib.File;
-using System;
 using System.Linq;
 
 namespace MediaComplete.Lib.Library
@@ -17,22 +14,6 @@ namespace MediaComplete.Lib.Library
         /// </summary>
         private readonly Dictionary<string, LocalSong> _cachedSongFiles;
 
-        /// <summary>
-        /// Occurs when Library needs to be refreshed
-        /// </summary>
-        public static event RefreshLibraryListener RefreshLibraryEvent = delegate { };
-
-        /// <summary>
-        /// Delegate for handling Library refresh
-        /// </summary>
-        public delegate void RefreshLibraryListener();
-        /// <summary>
-        /// Invokes Event to refresh library UI
-        /// </summary>
-        public static void RefreshLibrary()
-        {
-            RefreshLibraryEvent.Invoke();
-        }
         /// <summary>
         /// singleton instance of the Filemanager
         /// </summary>
@@ -138,8 +119,19 @@ namespace MediaComplete.Lib.Library
 
         #region Events
 
+        /// <summary>
+        /// Triggered when a song is removed from the library
+        /// </summary>
         public event SongEventHandler SongRemoved = delegate { };
+
+        /// <summary>
+        /// Triggered when a song's properties is changed
+        /// </summary>
         public event SongEventHandler SongChanged = delegate { };
+
+        /// <summary>
+        /// Triggered when a new song is added to the library
+        /// </summary>
         public event SongEventHandler SongAdded = delegate { };
 
         #endregion
@@ -188,13 +180,25 @@ namespace MediaComplete.Lib.Library
         /// <returns>LocalSong if it exists, null if it doesn't</returns>
         AbstractSong GetSong(string path);
 
+        /// <summary>
+        /// Triggered when a song is removed from the library
+        /// </summary>
         event SongEventHandler SongRemoved;
 
+        /// <summary>
+        /// Triggered when a song's properties is changed
+        /// </summary>
         event SongEventHandler SongChanged;
 
+        /// <summary>
+        /// Triggered when a new song is added to the library
+        /// </summary>
         event SongEventHandler SongAdded;
     }
 
+    /// <summary>
+    /// The signature for an event handler that accepts information about song changes within the library.
+    /// </summary>
+    /// <param name="song">The affected song</param>
     public delegate void SongEventHandler(AbstractSong song);
-
 }

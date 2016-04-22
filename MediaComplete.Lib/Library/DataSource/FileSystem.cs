@@ -75,6 +75,16 @@ namespace MediaComplete.Lib.Library.DataSource
         }
 
         /// <summary>
+        /// Move a directory, and all its contents.
+        /// </summary>
+        /// <param name="source">The source directory</param>
+        /// <param name="dest">The destination</param>
+        public void MoveDirectory(DirectoryPath source, DirectoryPath dest)
+        {
+            Directory.Move(source.FullPath, dest.FullPath);
+        }
+
+        /// <summary>
         /// Verifies if the specified file exists.
         /// </summary>
         /// <param name="file">file location to check</param>
@@ -294,6 +304,12 @@ namespace MediaComplete.Lib.Library.DataSource
         /// </summary>
         /// <param name="directory">Destination location to create the folder, including folder name</param>
         void CreateDirectory(DirectoryPath directory);
+        /// <summary>
+        /// Move a directory, and all its contents.
+        /// </summary>
+        /// <param name="source">The source directory</param>
+        /// <param name="dest">The destination</param>
+        void MoveDirectory(DirectoryPath source, DirectoryPath dest);
         /// <summary>
         /// Verifies if the specified file exists.
         /// </summary>
