@@ -25,14 +25,16 @@ namespace MediaComplete.Lib.Library
 
         #region AbstractSong overrides
 
-        private readonly string _id;
         /// <summary>
         /// Unique key value used to look up the song in the FileManager
         /// </summary>
-        public override string Id
-        {
-            get { return _id; }
-        }
+        public override string Id { get { return _id; } }
+        private readonly string _id;
+
+        /// <summary>
+        /// The path describing where we tried to get this song from
+        /// </summary>
+        public override string Path { get { return Source.Path; } }
 
         /// <summary>
         /// Compares songs by Id
@@ -44,15 +46,6 @@ namespace MediaComplete.Lib.Library
         public override bool Equals(object other)
         {
             return other is ErrorSong && ((ErrorSong)other).Id.Equals(_id);
-        }
-
-        /// <summary>
-        /// Unique value defined by object in order to hash
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return string.Format("{0}-{1}-{2}-{3}", _id, Title, Artists, Album).GetHashCode();
         }
 
         #endregion

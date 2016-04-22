@@ -17,6 +17,11 @@ namespace MediaComplete.Lib.Library
         /// </summary>
         public abstract string Id { get; }
 
+        /// <summary>
+        /// Returns the full path of the song on the drive.
+        /// </summary>
+        public abstract string Path { get; }
+
         //All MetaData Attributes are read from TagLib Files.
         #region MetaData Attributes
         /// <summary>
@@ -223,6 +228,6 @@ namespace MediaComplete.Lib.Library
         /// <summary>
         /// This is the name of the song
         /// </summary>
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

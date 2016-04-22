@@ -37,11 +37,6 @@ namespace MediaComplete.Lib.Sorting
             {
                 return;
             }
-
-            if (!FileSystem.DirectoryExists(Dest.Directory))
-            {
-                FileSystem.CreateDirectory(Dest.Directory);
-            }
             FileSystem.MoveFile(Source, Dest);
         }
     }
@@ -62,11 +57,6 @@ namespace MediaComplete.Lib.Sorting
         /// </summary>
         public void Do()
         {
-            if (Target == null || !FileSystem.FileExists(Target.SongPath)) // Will happen if something goes wrong in the calculation
-            {
-                return;
-            }
-
             FileSystem.DeleteSong(Target); // TODO (MC-74) This should be a "recycle" delete. Not implemented yet.
         }
     }

@@ -8,6 +8,7 @@ using Task = MediaComplete.Lib.Background.Task;
 using Sys = System.Threading.Tasks;
 using MediaComplete.Lib.Background;
 using MediaComplete.Lib.Library.DataSource;
+using MediaComplete.Lib.Library;
 
 namespace MediaComplete.Lib.Import
 {

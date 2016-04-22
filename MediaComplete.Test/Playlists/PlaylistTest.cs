@@ -20,9 +20,7 @@ namespace MediaComplete.Test.Playlists
             var mockManager = new Mock<ILibrary>();
 
             var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
             var service = new PlaylistServiceImpl(mockManager.Object);
-
 
             var subject = new Playlist(service, mock.Object);
 
@@ -40,9 +38,8 @@ namespace MediaComplete.Test.Playlists
             var mockManager = new Mock<ILibrary>();
 
             var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
+            mockManager.Setup(x => x.GetSong(It.IsAny<string>())).Returns(song);
             var service = new PlaylistServiceImpl(mockManager.Object);
-
 
             var subject = new Playlist(service, mock.Object);
 
@@ -60,9 +57,8 @@ namespace MediaComplete.Test.Playlists
             var mockManager = new Mock<ILibrary>();
 
             var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
+            mockManager.Setup(x => x.GetSong(It.IsAny<string>())).Returns(song);
             var service = new PlaylistServiceImpl(mockManager.Object);
-
 
             var subject = new Playlist(service, mock.Object);
 
@@ -80,7 +76,7 @@ namespace MediaComplete.Test.Playlists
             var mockManager = new Mock<ILibrary>();
 
             var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
+            mockManager.Setup(x => x.GetSong(It.IsAny<string>())).Returns(song);
             var service = new PlaylistServiceImpl(mockManager.Object);
 
             var subject = new Playlist(service, mock.Object);
@@ -94,28 +90,6 @@ namespace MediaComplete.Test.Playlists
         }
 
         [Test]
-        public void Rename_UnsavedList_CallsRename()
-        {
-            const string testTitle = "Test title";
-            const string newTitle = "New title";
-            var mock = BuildM3UMock(testTitle, new List<MediaItem> { BuildMediaItem(), BuildMediaItem() });
-
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            // Disabled since the set operation is the only thing we actually do with it.
-            var mockManager = new Mock<ILibrary>();
-
-            var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
-            //var service = new PlaylistServiceImpl(mockManager.Object);
-
-            //var subject = new Playlist(service, mock.Object);
-
-            //subject.Title = newTitle;
-
-//            mock.VerifySet(m => m.Name = It.IsAny<string>(), Times.Once);
-        }
-
-        [Test]
         public void Rename_SavedList_CallsRename()
         {
             const string testTitle = "Test title";
@@ -124,7 +98,7 @@ namespace MediaComplete.Test.Playlists
 
             var mockManager = new Mock<ILibrary>();
             var song = new LocalSong("id", new SongPath("path"));
-            mockManager.Setup(x => x.GetSong(It.IsAny<MediaItem>())).Returns(song);
+            mockManager.Setup(x => x.GetSong(It.IsAny<string>())).Returns(song);
             var service = new PlaylistServiceImpl(mockManager.Object);
 
             var subject = new Playlist(service, mock.Object);

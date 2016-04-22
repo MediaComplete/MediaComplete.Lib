@@ -48,7 +48,7 @@ namespace MediaComplete.Lib.Library.DataSource
         /// <summary>
         /// Returns the full path of the song on the drive.
         /// </summary>
-        public string Path
+        public override string Path
         {
             get { return SongPath.FullPath; }
         }
